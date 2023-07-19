@@ -1,32 +1,33 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import ProductCard from "./components/ProductCard";
-import {FAKESTOREAPI} from "./assets/constants"
+import ProductCard from "./components/ProductCards";
+import { FAKESTOREAPI } from "./assets/constants";
 import SearchProduct from "./components/SearchProduct";
+import { useDispatch } from "react-redux";
+import { initializeProducts } from "./assets/ProductSlice";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { useSelector } from "react-redux";
+
 const Home = () => {
-  const [allProducts, setAllProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [category, setCategory] = useState([]);
+  const allProducts = useSelector((state) => state.product.allProducts);
+  const dispatch = useDispatch();
   useEffect(() => {
     getProduct();
+    window.scrollTo(0, 0);
   }, []);
 
-
-  console.log("Page reload");
   async function getProduct() {
     const data = await fetch(FAKESTOREAPI + "products");
     const json = await data.json();
-    setAllProducts(json);
-    setFilteredProducts(json);
-    const category = [... new Set(json.map((value) => value?.category))]
-    category.unshift("ALL")
-    setCategory(category)
+    dispatch(initializeProducts(json));
   }
   return (
     <div>
-    {/* Filter Section */}
-      <SearchProduct allProducts={allProducts} filteredProducts={filteredProducts} setFilteredProducts={setFilteredProducts} category={category}  />
-      <ProductCard filteredProducts={filteredProducts}/>
+      <Navbar />
+      <SearchProduct />
+      <ProductCard />
+      <Footer />
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import React from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import useScrollToTop from '../hooks/useScrollTop'
 
 const Profile = () => {
+  useScrollToTop();
   return (
     <div>
         <Navbar />

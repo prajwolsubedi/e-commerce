@@ -1,58 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import { Price } from "../assets/constants";
-const PriceDropdown = ({
-  filteredProducts,
-  setFilteredProducts,
-  allProducts,
-}) => {
-  const allFilteredArray = (arr1, arr2) => {
-    const filteredArray = arr1.filter((item1) => {
-      const matchingObj = arr2.find((item2) => item1.id === item2.id);
-      return matchingObj !== undefined;
-    });
-    return filteredArray;
-  };
+import { useSelector, useDispatch } from "react-redux";
+import { onPriceChange } from "../assets/ProductSlice";
+import { onFilter } from "../assets/ProductSlice";
+const PriceDropdown = ({ filterProducts }) => {
+  const dispatch = useDispatch();
+  const currPrice = useSelector((state) => state.product.price);
+  //   const filteredArray = arr1.filter((item1) => {
+  //     const matchingObj = arr2.find((item2) => item1.id === item2.id);
+  //     return matchingObj !== undefined;
+  //   });
+  //   return filteredArray;
+  // };
 
-  const priceFilter = (lowerLimit, UpperLimit) => {
-    return allProducts.filter(
-      (item) => item.price >= lowerLimit && item.price <= UpperLimit
-    );
-  };
+  // const priceFilter = (lowerLimit, UpperLimit) => {
+  //   return allProducts.filter(
+  //     (item) => item.price >= lowerLimit && item.price <= UpperLimit
+  //   );
+  // };
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(null);
-  const handlePriceClick = (price) => {
+
+  const handlePriceClick = (price, index) => {
+    dispatch(onPriceChange(index));
     setSelectedPrice(price);
     setIsOpen((prev) => !prev);
-    if (price === "None") {
-      setFilteredProducts(allProducts);
-    } else if (price === "$0 - $50") {
-      const priceFilteredArray = priceFilter(0, 50);
-      setFilteredProducts(
-        allFilteredArray(priceFilteredArray, filteredProducts)
-      );
-    } else if (price === "$50 - $100") {
-      const priceFilteredArray = priceFilter(50, 100);
-      setFilteredProducts(
-        allFilteredArray(priceFilteredArray, filteredProducts)
-      );
-    } else if (price === "$100 - $150") {
-      const priceFilteredArray = priceFilter(100, 150);
-      setFilteredProducts(
-        allFilteredArray(priceFilteredArray, filteredProducts)
-      );
-    } else if (price === "$150 - $200") {
-      const priceFilteredArray = priceFilter(150, 200);
-      setFilteredProducts(
-        allFilteredArray(priceFilteredArray, filteredProducts)
-      );
-    }
   };
+
+  useEffect(() => {
+    const filteredProductsArray = filterProducts();
+    dispatch(onFilter(filteredProductsArray));
+  }, [currPrice]);
   return (
-    <div className="w-1/6 text-[#fff] flex flex-col items-center rounded-lg relative">
+    <div className="w-2/5 text-[#fff] flex flex-col items-center rounded-lg relative max-md:w-3/6 max-md:ml-2">
       <button
-        className="bg-white text-black w-full p-2 flex items-center justify-between rounded-lg tracking-wider border-4 border-transparent active:border-[#232f3e] duration-300 active:text-yellow-900"
+        className="bg-white text-black w-full py-1 px-2 flex items-center justify-between rounded-lg tracking-wider border-4 border-transparent active:border-[#232f3e] duration-300 active:text-yellow-900"
         onClick={(e) => {
           setIsOpen((prev) => !prev);
           e.preventDefault();
@@ -67,7 +51,7 @@ const PriceDropdown = ({
             <h3
               key={index}
               className="w-full  font-figtree pl-4 hover:bg-[#3a7bc085] cursor-pointer rounded"
-              onClick={() => handlePriceClick(price)}
+              onClick={() => handlePriceClick(price, index)}
             >
               {price}
             </h3>

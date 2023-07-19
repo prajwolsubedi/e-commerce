@@ -1,12 +1,14 @@
-import React from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import useScrollTop from "../hooks/useScrollTop"
+
 const About = () => {
+  useScrollTop();
   return (
     <div>
         <Navbar />
-        <div className="font-figtree font-semibold text-xl p-40 text-center bg-[#d6cfcf]">
-        <h1>Want to know about me!!</h1>
+        <div className="bg-[#d6cfcf]">
+        <h2 className="font-mono text-lg text-center p-52 ">More about me on linkedIn Hurry up follow me!!</h2>
       </div>
         <Footer />
     </div>

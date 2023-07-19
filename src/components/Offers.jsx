@@ -1,7 +1,8 @@
-import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import useScrollTop from "../hooks/useScrollTop"
 const Offers = () => {
+  useScrollTop();
   return (
     <div>
       <Navbar />
