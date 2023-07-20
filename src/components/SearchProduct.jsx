@@ -1,4 +1,3 @@
-import React from "react";
 import { GrSearch } from "react-icons/gr";
 import { IoLocationOutline } from "react-icons/io5";
 import PriceDropdown from "./PriceDropdown";
